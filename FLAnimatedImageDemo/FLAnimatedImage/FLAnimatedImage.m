@@ -220,7 +220,9 @@ static NSHashTable *allAnimatedImagesWeak;
         //     };
         // }
         NSDictionary *imageProperties = (__bridge_transfer NSDictionary *)CGImageSourceCopyProperties(_imageSource, NULL);
-        _loopCount = [[[imageProperties objectForKey:(id)kCGImagePropertyGIFDictionary] objectForKey:(id)kCGImagePropertyGIFLoopCount] unsignedIntegerValue];
+        if (_loopCount==0) {
+            _loopCount = [[[imageProperties objectForKey:(id)kCGImagePropertyGIFDictionary] objectForKey:(id)kCGImagePropertyGIFLoopCount] unsignedIntegerValue];
+        }
         
         // Iterate through frame images
         size_t imageCount = CGImageSourceGetCount(_imageSource);
@@ -339,9 +341,21 @@ static NSHashTable *allAnimatedImagesWeak;
 }
 
 
+- (instancetype)initWithAnimatedGIFData:(NSData *)data loopCount:(NSUInteger)loopCount{
+    _loopCount = loopCount;
+    return [self initWithAnimatedGIFData:data];
+}
+
+
 + (instancetype)animatedImageWithGIFData:(NSData *)data
 {
     FLAnimatedImage *animatedImage = [[FLAnimatedImage alloc] initWithAnimatedGIFData:data];
+    return animatedImage;
+}
+
+
++ (instancetype)animatedImageWithGIFData:(NSData *)data loopCount:(NSUInteger)loopCount{
+    FLAnimatedImage *animatedImage = [[FLAnimatedImage alloc] initWithAnimatedGIFData:data loopCount:loopCount];
     return animatedImage;
 }
 
