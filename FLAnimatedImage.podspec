@@ -22,4 +22,8 @@ Pod::Spec.new do |spec|
   spec.source_files     = "FLAnimatedImageDemo/FLAnimatedImage", "FLAnimatedImageDemo/FLAnimatedImage/**/*.{h,m}"
   spec.frameworks       = "QuartzCore", "ImageIO", "MobileCoreServices", "CoreGraphics"
   spec.requires_arc     = true
+
+  spec.subspec "CocoaLumberjack" do |cs|
+    cs.dependency 'CocoaLumberjack', '~> 2.0'
+  end
 end
